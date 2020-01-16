@@ -9,7 +9,7 @@ var ziely = 460;
 //Für's Punktekonto
 var siegpunkte = 0;
 //Für's Zeitlimit
-var spielzeit = 45;
+var spielzeit = 30;
 var restzeit = 0;
 var startzeit = new Date();
 //für die "Gegner"
@@ -65,6 +65,32 @@ $(document).ready(function() {
   }
 }
 
+//Testbereich um zu sehen was aus Taktung raus kann
+//fct um Timer zu stoppen und Anzeige aufpoppen zu lassen
+function spielende() {
+  clearInterval(takt);
+  $('#spielendeanzeige').show();
+}
+
+function setzeGegner() {
+  console.log('Länge gegpos: ' + gegnerpositionen.length);
+  for (nr = 0; nr < gegnerpositionen.length; nr++) {
+    gegnerpositionen[nr] += gegnerbewegung[nr] *5;
+    if (gegnerpositionen[nr] > 580 || gegnerpositionen[nr] < 0) {
+      gegnerbewegung[nr] *= -1;
+    }
+    erzeugeGegner(gegnerpositionen[nr], 360-(nr*40));
+  }
+}
+
+function erzeugeGegner(gx, gy) {
+  var img = new Image();
+  img.src = 'bilder/gegnerfigur.png';
+  img.onload = function() {
+    spielfeld.drawImage(img, gx, gy);
+  }
+}
+
   //fct für Taktung
   function taktung() {
     //löscht Inhalt des kompletten Spielfelds
@@ -85,31 +111,11 @@ $(document).ready(function() {
     $('#spielzeit').html('Spielzeit: ' + restzeit);
     if (restzeit <= 0) {
       spielende();
-    //fct um Timer zu stoppen und Anzeige aufpoppen zu lassen
-    function spielende() {
-		  clearInterval(takt);
-		  $('#spielendeanzeige').show();
-	}
+    }
+  //hier fct spielende wieder rein
 
-    }
-    function setzeGegner() {
-      console.log('Länge gegpos: ' + gegnerpositionen.length);
-      for (nr = 0; nr < gegnerpositionen.length; nr++) {
-        gegnerpositionen[nr] += gegnerbewegung[nr] *5;
-        if (gegnerpositionen[nr] > 580 || gegnerpositionen[nr] < 0) {
-          gegnerbewegung[nr] *= -1;
-        }
-        erzeugeGegner(gegnerpositionen[nr], 360-(nr*40));
-      }
-    }
+  //und zwar genau unter dem u von und fct setzeGegner
 
-    function erzeugeGegner(gx, gy) {
-      var img = new Image();
-      img.src = 'bilder/gegnerfigur.png';
-      img.onload = function() {
-        spielfeld.drawImage(img, gx, gy);
-      }
-    }
 
     }
 
