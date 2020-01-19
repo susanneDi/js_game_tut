@@ -91,6 +91,26 @@ function erzeugeGegner(gx, gy) {
   }
 }
 
+//fct für kollisionsprüfung gegner
+function kollisionspruefungGegner() {
+  for (nr = 0; nr < gegnerpositionen.length; nr++) {
+    var ygeg = 360-(nr*40);
+    if (Math.abs(x - gegnerpositionen[nr]) < 20 && y == ygeg) {
+      //Zusammenstoß
+      kollisionGegner();
+      console.log("Zusammenstoß");
+      console.log(Math.abs(x - gegnerpositionen[nr]));
+      console.log( " | y: " + y );
+      console.log( " | y: " + ygeg + "berechnet ");
+    }
+  }
+}
+
+function kollisionGegner() {
+  clearInterval(takt);
+  $('#gameover').show();
+}
+
   //fct für Taktung
   function taktung() {
     //löscht Inhalt des kompletten Spielfelds
@@ -103,6 +123,7 @@ function erzeugeGegner(gx, gy) {
     spielfeld.drawImage(spielfigur,x,y);
     //und das selbe mit zielfelderreicht
     zielfelderreicht();
+    kollisionspruefungGegner();
     setzeGegner();
 
     var aktuellezeit = new Date();
